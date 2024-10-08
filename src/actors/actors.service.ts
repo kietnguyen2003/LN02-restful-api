@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateActorDto } from './dto/create-actor.dto';
 import { UpdateActorDto } from './dto/update-actor.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -47,11 +47,24 @@ export class ActorsService {
     return actor;
   }
 
-  update(id: number, updateActorDto: UpdateActorDto) {
-    return `This action updates a #${id} actor`;
+  async update(id: number, updateActorDto: UpdateActorDto) {
+    const actor = await this.actorsRepository.findOneBy({ actor_id: id });
+
+    if (!actor) {
+      throw new NotFoundException(`Actor with ID ${id} not found`);
+    }
+
+    Object.assign(actor, updateActorDto); 
+    return this.actorsRepository.save(actor);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} actor`;
+  async remove(id: number) {
+    const actor = await this.actorsRepository.findOneBy({ actor_id: id });
+
+    if (!actor) {
+      throw new NotFoundException(`Actor with ID ${id} not found`);
+    }
+
+    return this.actorsRepository.remove(actor); 
   }
 }
