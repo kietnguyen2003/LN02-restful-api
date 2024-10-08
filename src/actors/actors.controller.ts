@@ -6,6 +6,8 @@ import {
   Patch,
   Param,
   Delete,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { ActorsService } from './actors.service';
 import { CreateActorDto } from './dto/create-actor.dto';
@@ -16,8 +18,19 @@ export class ActorsController {
   constructor(private readonly actorsService: ActorsService) {}
 
   @Post()
-  create(@Body() createActorDto: CreateActorDto) {
-    return this.actorsService.create(createActorDto);
+  async create(@Body() createActorDto: CreateActorDto) {
+    try {
+      return await this.actorsService.create(createActorDto);
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      } else {
+        throw new HttpException(
+          'Internal Server Error',
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
+      }
+    }
   }
 
   @Get()

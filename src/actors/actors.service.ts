@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateActorDto } from './dto/create-actor.dto';
 import { UpdateActorDto } from './dto/update-actor.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -11,16 +11,40 @@ export class ActorsService {
     @InjectRepository(Actor) private actorsRepository: Repository<Actor>,
   ) {}
 
-  create(createActorDto: CreateActorDto) {
-    return 'This action adds a new actor';
+  async create(createActorDto: CreateActorDto) {
+    const existingActor = await this.actorsRepository.findOne({
+      where: {
+        first_name: createActorDto.first_name,
+        last_name: createActorDto.last_name,
+      },
+    });
+
+    if (existingActor) {
+      throw new HttpException('Actor already exists', HttpStatus.CONFLICT);
+    }
+
+    const newActor = this.actorsRepository.create(createActorDto);
+    const savedActor = await this.actorsRepository.save(newActor);
+
+    return {
+      statusCode: 201,
+      message: 'Actor created successfully',
+      data: savedActor,
+    };
   }
 
   findAll() {
     return this.actorsRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} actor`;
+  async findOne(id: number) {
+    const actor = await this.actorsRepository.findOneBy({ actor_id: id });
+
+    if (!actor) {
+      throw new Error(`Actor with id ${id} not found`);
+    }
+
+    return actor;
   }
 
   update(id: number, updateActorDto: UpdateActorDto) {
