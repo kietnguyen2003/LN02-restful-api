@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { ActorsModule } from './actors/actors.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Actor } from './actors/entities/actor.entity';
+import { ActorInfo } from './actors/entities/actor-info.entity';
+import { FilmActor } from './actors/entities/film-actor.entitty';
 
 @Module({
   imports: [
@@ -12,7 +14,7 @@ import { Actor } from './actors/entities/actor.entity';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [Actor],
+      entities: [Actor, ActorInfo, FilmActor],
     }),
     ActorsModule,
   ],

@@ -6,8 +6,7 @@ import {
   Patch,
   Param,
   Delete,
-  HttpException,
-  HttpStatus,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { ActorsService } from './actors.service';
 import { CreateActorDto } from './dto/create-actor.dto';
@@ -19,18 +18,7 @@ export class ActorsController {
 
   @Post()
   async create(@Body() createActorDto: CreateActorDto) {
-    try {
-      return await this.actorsService.create(createActorDto);
-    } catch (error) {
-      if (error instanceof HttpException) {
-        throw error;
-      } else {
-        throw new HttpException(
-          'Internal Server Error',
-          HttpStatus.INTERNAL_SERVER_ERROR,
-        );
-      }
-    }
+    return await this.actorsService.create(createActorDto);
   }
 
   @Get()
@@ -39,17 +27,20 @@ export class ActorsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', ParseIntPipe) id: string) {
     return this.actorsService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateActorDto: UpdateActorDto) {
+  update(
+    @Param('id', ParseIntPipe) id: string,
+    @Body() updateActorDto: UpdateActorDto,
+  ) {
     return this.actorsService.update(+id, updateActorDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id', ParseIntPipe) id: string) {
     return this.actorsService.remove(+id);
   }
 }
