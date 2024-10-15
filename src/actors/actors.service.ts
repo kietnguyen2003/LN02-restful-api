@@ -10,7 +10,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Actor } from './entities/actor.entity';
 import { Repository } from 'typeorm';
 import { ActorInfo } from './entities/actor-info.entity';
-import { FilmActor } from './entities/film-actor.entitty';
+import { FilmActor } from './entities/film-actor.entity';
 
 @Injectable()
 export class ActorsService {
