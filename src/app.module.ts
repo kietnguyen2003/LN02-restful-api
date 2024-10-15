@@ -4,7 +4,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Actor } from './actors/entities/actor.entity';
 import { ActorInfo } from './actors/entities/actor-info.entity';
 import { FilmActor } from './actors/entities/film-actor.entitty';
-
+import { Film } from './films/entities/film.entity';
+import { FilmsModule } from './films/films.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -14,9 +15,9 @@ import { FilmActor } from './actors/entities/film-actor.entitty';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [Actor, ActorInfo, FilmActor],
+      entities: [Actor, ActorInfo, FilmActor,Film],
     }),
-    ActorsModule,
+    ActorsModule,FilmsModule
   ],
   controllers: [],
   providers: [],
