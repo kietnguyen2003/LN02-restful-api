@@ -4,11 +4,25 @@ import { Film } from './entities/film.entity';
 import { Repository } from 'typeorm';
 import { CreateFilmDto } from './dto/create-film.dto';
 import { UpdateFilmDto } from './dto/update-film.dto';
+import { FilmActor } from 'src/actors/entities/film-actor.entity';
+import { FilmCategory } from './entities/film-category.entity';
+import { Inventory } from './entities/inventory.entity';
+import { Rental } from './entities/rental.entity';
+import { In } from 'typeorm';
+
 
 @Injectable()
 export class FilmsService {
   constructor(
     @InjectRepository(Film) private filmsRepository: Repository<Film>,
+    @InjectRepository(FilmActor)
+    private filmActorRepository: Repository<FilmActor>,
+    @InjectRepository(FilmCategory)
+    private filmCategoryRepository: Repository<FilmCategory>,
+    @InjectRepository(Inventory)
+    private inventoryRepository: Repository<Inventory>,
+    @InjectRepository(Rental)
+    private rentalRepository: Repository<Rental>,
   ) {}
 
   async create(createFilmDto: CreateFilmDto) {
@@ -67,6 +81,20 @@ export class FilmsService {
     if (!film) {
       throw new NotFoundException(`Film with ID ${id} not found`);
     }
+
+    const inventories = await this.inventoryRepository.find({
+      where: { film_id: id },
+    });
+
+    const inventoryIds = inventories.map((inventory) => inventory.inventory_id);
+
+    await this.rentalRepository.delete({ inventory_id: In(inventoryIds) });
+
+    await this.filmActorRepository.delete({ film_id: id });
+
+    await this.filmCategoryRepository.delete({ film_id: id });
+
+    await this.inventoryRepository.delete({ film_id: id });
 
     return await this.filmsRepository.remove(film);
   }
