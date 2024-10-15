@@ -1,4 +1,4 @@
-import { MaxLength, IsString, IsOptional, IsInt, Min, Max, IsEnum, IsDecimal, IsArray, ArrayContains } from 'class-validator';
+import { MaxLength, IsString, IsOptional, IsInt, Min, Max, IsEnum, IsDecimal, IsArray, ArrayContains, IsNumber } from 'class-validator';
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateFilmDto } from './create-film.dto';
 import { ApiProperty } from '@nestjs/swagger';
@@ -35,7 +35,9 @@ export class UpdateFilmDto extends PartialType(CreateFilmDto) {
     @ApiProperty()
     rental_duration: number = 3;
 
-    @IsDecimal({ decimal_digits: '2', force_decimal: true })
+    @IsNumber({maxDecimalPlaces: 2})
+    @Min(0)
+    @Max(99.99) 
     @ApiProperty()
     rental_rate: number = 4.99;
 
@@ -44,7 +46,9 @@ export class UpdateFilmDto extends PartialType(CreateFilmDto) {
     @ApiProperty()
     length?: number;
 
-    @IsDecimal({ decimal_digits: '2', force_decimal: true })
+    @IsNumber({maxDecimalPlaces: 2})
+    @Min(0) 
+    @Max(999.99) 
     @ApiProperty()
     replacement_cost: number = 19.99;
 
@@ -55,9 +59,7 @@ export class UpdateFilmDto extends PartialType(CreateFilmDto) {
 
     @IsArray()
     @IsOptional()
-    @ArrayContains(['Trailers', 'Commentaries', 'Deleted Scenes', 'Behind the Scenes'], {
-        message: 'Special features can only be one of the following: Trailers, Commentaries, Deleted Scenes, Behind the Scenes',
-    })
+    @IsEnum(['Trailers', 'Commentaries', 'Deleted Scenes', 'Behind the Scenes'], { each: true })
     @ApiProperty()
     special_features?: string[];
 }
