@@ -7,12 +7,18 @@ export class UpdateActorDto extends PartialType(CreateActorDto) {
   @IsString()
   @IsNotEmpty()
   @MaxLength(50)
-  @ApiProperty()
+  @ApiProperty({
+    description: 'The updated first name of the actor',
+    example: 'Chris',
+  })
   first_name: string;
 
   @IsString()
   @IsNotEmpty()
   @MaxLength(50)
-  @ApiProperty()
+  @ApiProperty({
+    description: 'The updated last name of the actor',
+    example: 'Evans',
+  })
   last_name: string;
 }
