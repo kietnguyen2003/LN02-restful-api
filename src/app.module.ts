@@ -12,6 +12,7 @@ import { Rental } from './films/entities/rental.entity';
 import { LoggingMiddleware } from './logging.middleware';
 import { WinstonModule } from 'nest-winston';
 import * as winston from 'winston';
+import 'winston-daily-rotate-file';
 
 @Module({
   imports: [
@@ -36,11 +37,18 @@ import * as winston from 'winston';
     FilmsModule,
     WinstonModule.forRoot({
       transports: [
-        new winston.transports.Console({
+        new winston.transports.DailyRotateFile({
+          filename: `logs/%DATE%-combined.log`,
           format: winston.format.combine(
             winston.format.timestamp(),
-            winston.format.simple(),
+            winston.format.json(),
           ),
+          datePattern: 'YYYY-MM-DD',
+          zippedArchive: false,
+          maxFiles: '30d',
+        }),
+        new winston.transports.Console({
+          format: winston.format.combine(winston.format.simple()),
         }),
       ],
     }),
