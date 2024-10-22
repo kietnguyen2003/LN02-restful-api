@@ -10,13 +10,15 @@ export class LoggingMiddleware implements NestMiddleware {
   ) {}
 
   use(req: Request, res: Response, next: NextFunction) {
-    const { method, url } = req;
+    const { method, originalUrl } = req;
     const start = Date.now();
 
     res.on('finish', () => {
       const { statusCode } = res;
       const duration = Date.now() - start;
-      this.logger.info(`[${method}] ${url} ${statusCode} - ${duration}ms`);
+      this.logger.info(
+        `[${method}] ${originalUrl} ${statusCode} - ${duration}ms`,
+      );
     });
 
     next();
