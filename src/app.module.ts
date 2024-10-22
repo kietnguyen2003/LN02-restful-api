@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { ActorsModule } from './actors/actors.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Actor } from './actors/entities/actor.entity';
@@ -9,6 +9,9 @@ import { FilmsModule } from './films/films.module';
 import { FilmCategory } from './films/entities/film-category.entity';
 import { Inventory } from './films/entities/inventory.entity';
 import { Rental } from './films/entities/rental.entity';
+import { LoggingMiddleware } from './logging.middleware';
+import { WinstonModule } from 'nest-winston';
+import * as winston from 'winston';
 
 @Module({
   imports: [
@@ -31,8 +34,22 @@ import { Rental } from './films/entities/rental.entity';
     }),
     ActorsModule,
     FilmsModule,
+    WinstonModule.forRoot({
+      transports: [
+        new winston.transports.Console({
+          format: winston.format.combine(
+            winston.format.timestamp(),
+            winston.format.simple(),
+          ),
+        }),
+      ],
+    }),
   ],
   controllers: [],
   providers: [],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggingMiddleware).forRoutes('*');
+  }
+}
