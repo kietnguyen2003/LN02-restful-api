@@ -9,7 +9,15 @@ import { Inventory } from './entities/inventory.entity';
 import { Rental } from './entities/rental.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Film,FilmActor,FilmCategory,Inventory,Rental])],
+  imports: [
+    TypeOrmModule.forFeature([
+      Film,
+      FilmActor,
+      FilmCategory,
+      Inventory,
+      Rental,
+    ]),
+  ],
   controllers: [FilmsController],
   providers: [FilmsService],
 })

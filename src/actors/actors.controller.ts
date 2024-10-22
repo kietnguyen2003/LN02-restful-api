@@ -20,7 +20,10 @@ export class ActorsController {
 
   @Post()
   @ApiOperation({ summary: 'Create a new actor' })
-  @ApiResponse({ status: 201, description: 'The actor has been successfully created.' })
+  @ApiResponse({
+    status: 201,
+    description: 'The actor has been successfully created.',
+  })
   @ApiResponse({ status: 400, description: 'Bad Request' })
   async create(@Body() createActorDto: CreateActorDto) {
     return await this.actorsService.create(createActorDto);

@@ -1,4 +1,9 @@
-import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Film } from './entities/film.entity';
 import { Repository } from 'typeorm';
@@ -9,7 +14,6 @@ import { FilmCategory } from './entities/film-category.entity';
 import { Inventory } from './entities/inventory.entity';
 import { Rental } from './entities/rental.entity';
 import { In } from 'typeorm';
-
 
 @Injectable()
 export class FilmsService {
@@ -62,7 +66,7 @@ export class FilmsService {
 
   async update(id: number, updateFilmDto: UpdateFilmDto) {
     const film = await this.filmsRepository.findOne({
-      where: { film_id: id }, 
+      where: { film_id: id },
     });
 
     if (!film) {

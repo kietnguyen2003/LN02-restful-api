@@ -20,7 +20,10 @@ export class FilmsController {
 
   @Post()
   @ApiOperation({ summary: 'Create a new film' })
-  @ApiResponse({ status: 201, description: 'The film has been successfully created.' })
+  @ApiResponse({
+    status: 201,
+    description: 'The film has been successfully created.',
+  })
   @ApiResponse({ status: 400, description: 'Bad Request' })
   async create(@Body() createFilmDto: CreateFilmDto) {
     return await this.filmsService.create(createFilmDto);
