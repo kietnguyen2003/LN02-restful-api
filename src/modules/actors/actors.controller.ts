@@ -13,11 +13,11 @@ import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { ActorsService } from './actors.service';
 import { CreateActorDto } from './dto/create-actor.dto';
 import { UpdateActorDto } from './dto/update-actor.dto';
-import { LoggingInterceptor } from 'src/interceptors/logging.interceptor';
+import { LoggingInterceptor } from 'src/common/interceptors/logging.interceptor';
 
 @ApiTags('actors')
 @Controller('actors')
-@UseInterceptors(new LoggingInterceptor())
+@UseInterceptors(LoggingInterceptor)
 export class ActorsController {
   constructor(private readonly actorsService: ActorsService) {}
 

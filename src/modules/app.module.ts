@@ -1,18 +1,17 @@
-import { MiddlewareConsumer, Module } from '@nestjs/common';
-import { ActorsModule } from './actors/actors.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import * as winston from 'winston';
+import 'winston-daily-rotate-file';
 import { Actor } from './actors/entities/actor.entity';
 import { ActorInfo } from './actors/entities/actor-info.entity';
 import { FilmActor } from './actors/entities/film-actor.entity';
 import { Film } from './films/entities/film.entity';
-import { FilmsModule } from './films/films.module';
 import { FilmCategory } from './films/entities/film-category.entity';
+import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { Inventory } from './films/entities/inventory.entity';
 import { Rental } from './films/entities/rental.entity';
-import { LoggingMiddleware } from './logging.middleware';
+import { ActorsModule } from './actors/actors.module';
+import { FilmsModule } from './films/films.module';
 import { WinstonModule } from 'nest-winston';
-import * as winston from 'winston';
-import 'winston-daily-rotate-file';
 
 @Module({
   imports: [
