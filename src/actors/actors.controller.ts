@@ -7,14 +7,17 @@ import {
   Param,
   Delete,
   ParseIntPipe,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { ActorsService } from './actors.service';
 import { CreateActorDto } from './dto/create-actor.dto';
 import { UpdateActorDto } from './dto/update-actor.dto';
+import { LoggingInterceptor } from 'src/interceptors/logging.interceptor';
 
 @ApiTags('actors')
 @Controller('actors')
+@UseInterceptors(new LoggingInterceptor())
 export class ActorsController {
   constructor(private readonly actorsService: ActorsService) {}
 
