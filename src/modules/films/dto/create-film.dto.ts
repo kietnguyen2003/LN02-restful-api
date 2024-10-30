@@ -19,7 +19,6 @@ export class CreateFilmDto {
   description?: string;
 
   @IsInt()
-  @Min(1888)
   @Max(new Date().getFullYear())
   @IsOptional()
   @ApiProperty({

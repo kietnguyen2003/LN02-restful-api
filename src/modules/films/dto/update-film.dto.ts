@@ -21,7 +21,6 @@ export class UpdateFilmDto extends PartialType(CreateFilmDto) {
   description?: string;
 
   @IsInt()
-  @Min(1888)
   @Max(new Date().getFullYear())
   @IsOptional()
   @ApiProperty({
