@@ -59,4 +59,13 @@
 - Đăng ký controller
 
 ## **Bước 6:  start server**
-Start server NestJs (npm run start) sau đó start nodejs (node test-client) để test
+- Start server NestJs (npm run start) sau đó start nodejs (node test-client) để test
+- Thêm vào nest-cli.json
+"compilerOptions": {
+    "deleteOutDir": true,
+    "assets": [
+      "**/*.proto"
+    ],
+    "watchAssets": true
+  }
+- Sửa port của data base lại
