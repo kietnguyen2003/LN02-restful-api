@@ -1,4 +1,5 @@
 # Hướng dẫn cấu hình và sử dụng gRPC trong NestJS
+**npm i --save @nestjs/microservices @grpc/grpc-js @grpc/reflection @grpc/proto-loader**
 
 ## Bước 1: Tạo file `.proto`
 - Sử dụng **syntax proto3**.
